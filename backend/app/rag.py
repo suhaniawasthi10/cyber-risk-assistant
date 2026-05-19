@@ -63,15 +63,19 @@ WEAKNESS_RULES = [
         "configuration management and secure baseline settings",
     ),
     (
-        "authentication_access",
+        "token_session_theft",
         (
-            "authentication bypass", "auth bypass",
-            "session token", "session leak", "session hijack",
-            "access control", "broken access", "broken authentication",
-            "insecure direct object", "idor",
-            "credential", "default password",
+            "session token", "token leak", "session hijack", "cookie",
         ),
-        "account management and access enforcement for authentication weakness",
+        "session authenticator management and replay-resistant authentication for stolen session tokens",
+    ),
+    (
+        "authentication_bypass",
+        (
+            "auth bypass", "authentication bypass",
+            "broken access", "privilege escalation", "missing authentication",
+        ),
+        "account management and access enforcement for broken authentication and access control",
     ),
 ]
 
