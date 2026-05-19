@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pandas
+requests
+sentence-transformers
+pinecone
+groq
+python-dotenv
