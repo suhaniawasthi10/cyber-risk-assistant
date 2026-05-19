@@ -94,8 +94,16 @@ def classify(vulnerability_name, affected_component=""):
     return DEFAULT_CATEGORY, DEFAULT_PHRASE
 
 
+# Categories where the affected_component string is noise — it pulls retrieval
+# toward whatever NIST family shares surface words with the component label.
+# Empirically: "Authentication Handler" anchored auth_bypass to IA-2.x family.
+OMIT_COMPONENT_CATEGORIES = {"authentication_bypass"}
+
+
 def build_query(vulnerability_name, affected_component):
     category, phrase = classify(vulnerability_name, affected_component)
+    if category in OMIT_COMPONENT_CATEGORIES:
+        return category, phrase
     component = (affected_component or "").strip()
     query = f"{phrase} for {component}" if component else phrase
     return category, query

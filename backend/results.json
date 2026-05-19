@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-19T19:36:57.053265+00:00",
+  "generated_at": "2026-05-19T19:47:47.014303+00:00",
   "data_quality": {
     "threat_intel_total": 40,
     "threat_intel_matched": 24,
@@ -77,7 +77,7 @@
         "query_phrase": "flaw remediation and security patch management for exploitable software vulnerability for VPN Firmware",
         "summary": "Fix system flaws and security vulnerabilities in a timely manner."
       },
-      "why_sentence": "The risk score is driven by the vulnerability's high severity and the asset's public exposure."
+      "why_sentence": "The risk is driven by internet exposure (25), a working exploit (25), and business criticality (18), with ransomware linkage (15) and missing endpoint detection (8) also contributing."
     },
     {
       "rank": 2,
@@ -147,7 +147,7 @@
         "query_phrase": "flaw remediation and security patch management for exploitable software vulnerability for VPN Firmware",
         "summary": "Fix system flaws and vulnerabilities in a timely manner."
       },
-      "why_sentence": "The risk score is driven by the vulnerability's high severity and the asset's exposure to the public internet."
+      "why_sentence": "The risk is driven by internet exposure (25) and a working exploit (25), with business criticality (18) as a secondary contributor."
     },
     {
       "rank": 3,
@@ -217,7 +217,7 @@
         "query_phrase": "session authenticator management and replay-resistant authentication for stolen session tokens for NetScaler ADC",
         "summary": "Use authentication methods that can't be fooled by repeated attempts to reuse old login information."
       },
-      "why_sentence": "The risk score is driven by the vulnerability's high severity and the asset's public exposure."
+      "why_sentence": "The risk is driven by internet exposure (25) and a working exploit (25), with ransomware association (15) as a secondary contributor."
     },
     {
       "rank": 4,
@@ -287,7 +287,7 @@
         "query_phrase": "session authenticator management and replay-resistant authentication for stolen session tokens for NetScaler ADC",
         "summary": "Use authentication methods that can't be fooled by repeated attempts to reuse old login information."
       },
-      "why_sentence": "The risk score is driven by the vulnerability's high severity and the asset's public exposure."
+      "why_sentence": "The risk is driven by internet exposure (25), a working exploit (25), and ransomware association (15), with business criticality (13) and missing endpoint detection (8) as secondary contributors."
     },
     {
       "rank": 5,
@@ -350,14 +350,14 @@
         "revenue_impact": "Medium"
       },
       "nist_control": {
-        "control_id": "IA-2.8",
-        "title": "Access to Accounts \u2014 Replay Resistant",
-        "similarity": 0.609174669,
+        "control_id": "AC-2",
+        "title": "Account Management",
+        "similarity": 0.64365381,
         "weakness_category": "authentication_bypass",
-        "query_phrase": "account management and access enforcement for broken authentication and access control for Authentication Handler",
-        "summary": "Use authentication methods that can't be fooled by repeated attempts to reuse old login information."
+        "query_phrase": "account management and access enforcement for broken authentication and access control",
+        "summary": "Manage system accounts to control user access and privileges."
       },
-      "why_sentence": "The risk score is driven by the vulnerability's high severity and the asset's public exposure."
+      "why_sentence": "The risk is driven by internet exposure (25), a working exploit (25), and ransomware association (15), with other factors contributing."
     }
   ]
 }
