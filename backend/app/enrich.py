@@ -33,9 +33,11 @@ def build_enriched(data):
     merged = vulns.merge(assets, on="asset_id", how="left")
     merged = merged.merge(services, on="business_service", how="left")
 
-    ti_unique = ti.drop_duplicates("matched_cve_or_control", keep="first")
+    # Do NOT pre-dedupe ti on matched_cve_or_control. Two TI rows may legitimately
+    # target the same CVE (e.g., two campaigns), and we want both counted in the
+    # match-rate logging. asset-dedup in score.top_n collapses any per-asset dupes.
     merged = merged.merge(
-        ti_unique,
+        ti,
         left_on="cve",
         right_on="matched_cve_or_control",
         how="left",
