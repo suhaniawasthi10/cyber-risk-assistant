@@ -10,7 +10,10 @@ from app.pipeline import RESULTS_PATH, run as run_pipeline
 
 @asynccontextmanager
 async def lifespan(app):
-    if not RESULTS_PATH.exists():
+    if RESULTS_PATH.exists():
+        print(f"[startup] serving cached results.json from {RESULTS_PATH}", flush=True)
+    else:
+        print(f"[startup] results.json not found; running pipeline once", flush=True)
         run_pipeline(verbose=True)
     yield
 
