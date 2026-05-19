@@ -51,14 +51,14 @@ def build_enriched(data):
     return merged
 
 
-def report_match_counts(data, enriched):
+def report_match_counts(data, enriched, verbose=True):
     ti = data["threat_intelligence"]
     matched_ti_ids = set(enriched.dropna(subset=["intel_id"])["intel_id"].unique())
     matched = len(matched_ti_ids)
     unmatched = len(ti) - matched
 
-    vuln_ti_hits = enriched["intel_id"].notna().sum()
-    vuln_kev_hits = enriched["cveID"].notna().sum()
+    vuln_ti_hits = int(enriched["intel_id"].notna().sum())
+    vuln_kev_hits = int(enriched["cveID"].notna().sum())
 
     # context.md §6: treat assets.internet_exposed as authoritative; log disagreements.
     disagree = enriched[
@@ -66,11 +66,21 @@ def report_match_counts(data, enriched):
         | ((enriched["internet_exposed"] == "No") & (enriched["asset_exposure"] == "Internet"))
     ]
 
-    print(f"threat_intel rows matched     : {matched} / {len(ti)}")
-    print(f"threat_intel rows unmatched   : {unmatched} / {len(ti)}  (industry noise)")
-    print(f"vulnerabilities with TI hit   : {vuln_ti_hits} / {len(enriched)}")
-    print(f"vulnerabilities with KEV hit  : {vuln_kev_hits} / {len(enriched)}")
-    print(f"exposure-field disagreements  : {len(disagree)}")
+    counts = {
+        "threat_intel_total": len(ti),
+        "threat_intel_matched": matched,
+        "threat_intel_unmatched": unmatched,
+        "vulnerabilities_with_ti_hit": vuln_ti_hits,
+        "vulnerabilities_with_kev_hit": vuln_kev_hits,
+        "exposure_field_disagreements": int(len(disagree)),
+    }
+    if verbose:
+        print(f"threat_intel rows matched     : {matched} / {len(ti)}")
+        print(f"threat_intel rows unmatched   : {unmatched} / {len(ti)}  (industry noise)")
+        print(f"vulnerabilities with TI hit   : {vuln_ti_hits} / {len(enriched)}")
+        print(f"vulnerabilities with KEV hit  : {vuln_kev_hits} / {len(enriched)}")
+        print(f"exposure-field disagreements  : {len(disagree)}")
+    return counts
 
 
 if __name__ == "__main__":

@@ -1,0 +1,363 @@
+{
+  "generated_at": "2026-05-19T19:36:57.053265+00:00",
+  "data_quality": {
+    "threat_intel_total": 40,
+    "threat_intel_matched": 24,
+    "threat_intel_unmatched": 16,
+    "vulnerabilities_with_ti_hit": 48,
+    "vulnerabilities_with_kev_hit": 32,
+    "exposure_field_disagreements": 1
+  },
+  "risks": [
+    {
+      "rank": 1,
+      "risk_score": 100.0,
+      "raw_score": 120.4,
+      "score_breakdown": {
+        "cvss_component": 29.400000000000002,
+        "internet_exposure": 25.0,
+        "exploit_component": 25.0,
+        "ransomware_component": 15.0,
+        "business_component": 18.0,
+        "controls_component": 8.0,
+        "hygiene_component": 0.0
+      },
+      "asset": {
+        "asset_id": "A-1005",
+        "asset_name": "vpn-edge-01",
+        "asset_type": "VPN Gateway",
+        "environment": "Production",
+        "owner_team": "Network Team",
+        "internet_exposed": "Yes",
+        "criticality": "Critical",
+        "edr_installed": "No",
+        "vendor_product": "Fortinet FortiGate 7.4.1",
+        "location": "UAE"
+      },
+      "vulnerability": {
+        "vuln_id": "V-2015",
+        "vulnerability_name": "Fortinet SSL-VPN Heap Buffer Overflow RCE",
+        "cve": "CVE-2024-21762",
+        "severity": "Critical",
+        "cvss": 9.8,
+        "affected_component": "VPN Firmware",
+        "days_open": 27,
+        "patch_available": "Yes",
+        "exploit_available": "Yes"
+      },
+      "threat_intel": {
+        "intel_id": "TI-3001",
+        "threat_actor": "CrimsonJackal",
+        "campaign_name": "Gateway Breaker",
+        "exploit_maturity": "Weaponized",
+        "ransomware_association": "Yes",
+        "confidence": "High",
+        "target_sector": "Financial Services",
+        "target_region": "Middle East",
+        "summary": "Active exploitation of Fortinet SSL-VPN CVE-2024-21762 observed against financial services and fintech firms in the Gulf region. Initial access leads to internal lateral movement and ransomware staging."
+      },
+      "kev": {
+        "in_kev": true,
+        "known_ransomware_campaign_use": "Known",
+        "date_added": "2024-02-09"
+      },
+      "business_service": {
+        "name": "Remote Access",
+        "business_owner": "CIO",
+        "business_impact": "Remote employees and administrators lose secure network access",
+        "customer_facing": "No",
+        "compliance_scope": "ISO 27001",
+        "revenue_impact": "High"
+      },
+      "nist_control": {
+        "control_id": "SI-2",
+        "title": "Flaw Remediation",
+        "similarity": 0.525294304,
+        "weakness_category": "rce_memory_corruption",
+        "query_phrase": "flaw remediation and security patch management for exploitable software vulnerability for VPN Firmware",
+        "summary": "Fix system flaws and security vulnerabilities in a timely manner."
+      },
+      "why_sentence": "The risk score is driven by the vulnerability's high severity and the asset's public exposure."
+    },
+    {
+      "rank": 2,
+      "risk_score": 100.0,
+      "raw_score": 120.4,
+      "score_breakdown": {
+        "cvss_component": 29.400000000000002,
+        "internet_exposure": 25.0,
+        "exploit_component": 25.0,
+        "ransomware_component": 15.0,
+        "business_component": 18.0,
+        "controls_component": 8.0,
+        "hygiene_component": 0.0
+      },
+      "asset": {
+        "asset_id": "A-1006",
+        "asset_name": "vpn-edge-02",
+        "asset_type": "VPN Gateway",
+        "environment": "Production",
+        "owner_team": "Network Team",
+        "internet_exposed": "Yes",
+        "criticality": "Critical",
+        "edr_installed": "No",
+        "vendor_product": "Fortinet FortiGate 7.4.1",
+        "location": "UAE"
+      },
+      "vulnerability": {
+        "vuln_id": "V-2019",
+        "vulnerability_name": "Fortinet SSL-VPN Heap Buffer Overflow RCE",
+        "cve": "CVE-2024-21762",
+        "severity": "Critical",
+        "cvss": 9.8,
+        "affected_component": "VPN Firmware",
+        "days_open": 27,
+        "patch_available": "Yes",
+        "exploit_available": "Yes"
+      },
+      "threat_intel": {
+        "intel_id": "TI-3001",
+        "threat_actor": "CrimsonJackal",
+        "campaign_name": "Gateway Breaker",
+        "exploit_maturity": "Weaponized",
+        "ransomware_association": "Yes",
+        "confidence": "High",
+        "target_sector": "Financial Services",
+        "target_region": "Middle East",
+        "summary": "Active exploitation of Fortinet SSL-VPN CVE-2024-21762 observed against financial services and fintech firms in the Gulf region. Initial access leads to internal lateral movement and ransomware staging."
+      },
+      "kev": {
+        "in_kev": true,
+        "known_ransomware_campaign_use": "Known",
+        "date_added": "2024-02-09"
+      },
+      "business_service": {
+        "name": "Remote Access",
+        "business_owner": "CIO",
+        "business_impact": "Remote employees and administrators lose secure network access",
+        "customer_facing": "No",
+        "compliance_scope": "ISO 27001",
+        "revenue_impact": "High"
+      },
+      "nist_control": {
+        "control_id": "SI-2",
+        "title": "Flaw Remediation",
+        "similarity": 0.525294304,
+        "weakness_category": "rce_memory_corruption",
+        "query_phrase": "flaw remediation and security patch management for exploitable software vulnerability for VPN Firmware",
+        "summary": "Fix system flaws and vulnerabilities in a timely manner."
+      },
+      "why_sentence": "The risk score is driven by the vulnerability's high severity and the asset's exposure to the public internet."
+    },
+    {
+      "rank": 3,
+      "risk_score": 100.0,
+      "raw_score": 119.2,
+      "score_breakdown": {
+        "cvss_component": 28.200000000000003,
+        "internet_exposure": 25.0,
+        "exploit_component": 25.0,
+        "ransomware_component": 15.0,
+        "business_component": 13.0,
+        "controls_component": 8.0,
+        "hygiene_component": 5.0
+      },
+      "asset": {
+        "asset_id": "A-1021",
+        "asset_name": "load-balancer-prod-01",
+        "asset_type": "Load Balancer",
+        "environment": "Production",
+        "owner_team": "Network Team",
+        "internet_exposed": "Yes",
+        "criticality": "High",
+        "edr_installed": "No",
+        "vendor_product": "Citrix NetScaler ADC 13.0",
+        "location": "UAE"
+      },
+      "vulnerability": {
+        "vuln_id": "V-2064",
+        "vulnerability_name": "Citrix ADC Session Token Leak (CitrixBleed)",
+        "cve": "CVE-2023-4966",
+        "severity": "Critical",
+        "cvss": 9.4,
+        "affected_component": "NetScaler ADC",
+        "days_open": 180,
+        "patch_available": "Yes",
+        "exploit_available": "Yes"
+      },
+      "threat_intel": {
+        "intel_id": "TI-3017",
+        "threat_actor": "IronVeil",
+        "campaign_name": "CitrixBleed Exploitation",
+        "exploit_maturity": "Active Exploitation",
+        "ransomware_association": "Yes",
+        "confidence": "High",
+        "target_sector": "Financial Services",
+        "target_region": "Global",
+        "summary": "IronVeil group actively exploiting Citrix NetScaler CitrixBleed CVE-2023-4966 to harvest session tokens from load balancers protecting financial portals. Tokens used to bypass MFA."
+      },
+      "kev": {
+        "in_kev": true,
+        "known_ransomware_campaign_use": "Known",
+        "date_added": "2023-10-18"
+      },
+      "business_service": {
+        "name": "Customer Login",
+        "business_owner": "Chief Digital Officer",
+        "business_impact": "Users cannot authenticate to the customer portal; all customer-facing transactions blocked",
+        "customer_facing": "Yes",
+        "compliance_scope": "GDPR",
+        "revenue_impact": "Critical"
+      },
+      "nist_control": {
+        "control_id": "IA-2.8",
+        "title": "Access to Accounts \u2014 Replay Resistant",
+        "similarity": 0.592884958,
+        "weakness_category": "token_session_theft",
+        "query_phrase": "session authenticator management and replay-resistant authentication for stolen session tokens for NetScaler ADC",
+        "summary": "Use authentication methods that can't be fooled by repeated attempts to reuse old login information."
+      },
+      "why_sentence": "The risk score is driven by the vulnerability's high severity and the asset's public exposure."
+    },
+    {
+      "rank": 4,
+      "risk_score": 100.0,
+      "raw_score": 119.2,
+      "score_breakdown": {
+        "cvss_component": 28.200000000000003,
+        "internet_exposure": 25.0,
+        "exploit_component": 25.0,
+        "ransomware_component": 15.0,
+        "business_component": 13.0,
+        "controls_component": 8.0,
+        "hygiene_component": 5.0
+      },
+      "asset": {
+        "asset_id": "A-1022",
+        "asset_name": "load-balancer-prod-02",
+        "asset_type": "Load Balancer",
+        "environment": "Production",
+        "owner_team": "Network Team",
+        "internet_exposed": "Yes",
+        "criticality": "High",
+        "edr_installed": "No",
+        "vendor_product": "Citrix NetScaler ADC 13.0",
+        "location": "UAE"
+      },
+      "vulnerability": {
+        "vuln_id": "V-2066",
+        "vulnerability_name": "Citrix ADC Session Token Leak (CitrixBleed)",
+        "cve": "CVE-2023-4966",
+        "severity": "Critical",
+        "cvss": 9.4,
+        "affected_component": "NetScaler ADC",
+        "days_open": 180,
+        "patch_available": "Yes",
+        "exploit_available": "Yes"
+      },
+      "threat_intel": {
+        "intel_id": "TI-3017",
+        "threat_actor": "IronVeil",
+        "campaign_name": "CitrixBleed Exploitation",
+        "exploit_maturity": "Active Exploitation",
+        "ransomware_association": "Yes",
+        "confidence": "High",
+        "target_sector": "Financial Services",
+        "target_region": "Global",
+        "summary": "IronVeil group actively exploiting Citrix NetScaler CitrixBleed CVE-2023-4966 to harvest session tokens from load balancers protecting financial portals. Tokens used to bypass MFA."
+      },
+      "kev": {
+        "in_kev": true,
+        "known_ransomware_campaign_use": "Known",
+        "date_added": "2023-10-18"
+      },
+      "business_service": {
+        "name": "Payment Processing",
+        "business_owner": "CFO",
+        "business_impact": "Payments and fund transfers fail; PCI DSS breach obligations triggered",
+        "customer_facing": "Yes",
+        "compliance_scope": "PCI DSS",
+        "revenue_impact": "Critical"
+      },
+      "nist_control": {
+        "control_id": "IA-2.8",
+        "title": "Access to Accounts \u2014 Replay Resistant",
+        "similarity": 0.592884958,
+        "weakness_category": "token_session_theft",
+        "query_phrase": "session authenticator management and replay-resistant authentication for stolen session tokens for NetScaler ADC",
+        "summary": "Use authentication methods that can't be fooled by repeated attempts to reuse old login information."
+      },
+      "why_sentence": "The risk score is driven by the vulnerability's high severity and the asset's public exposure."
+    },
+    {
+      "rank": 5,
+      "risk_score": 100.0,
+      "raw_score": 115.4,
+      "score_breakdown": {
+        "cvss_component": 29.400000000000002,
+        "internet_exposure": 25.0,
+        "exploit_component": 25.0,
+        "ransomware_component": 15.0,
+        "business_component": 8.0,
+        "controls_component": 8.0,
+        "hygiene_component": 5.0
+      },
+      "asset": {
+        "asset_id": "A-1014",
+        "asset_name": "teamcity-prod",
+        "asset_type": "Build Server",
+        "environment": "Production",
+        "owner_team": "DevOps",
+        "internet_exposed": "Yes",
+        "criticality": "High",
+        "edr_installed": "No",
+        "vendor_product": "JetBrains TeamCity 2023.11",
+        "location": "UAE"
+      },
+      "vulnerability": {
+        "vuln_id": "V-2043",
+        "vulnerability_name": "JetBrains TeamCity Authentication Bypass",
+        "cve": "CVE-2024-27198",
+        "severity": "Critical",
+        "cvss": 9.8,
+        "affected_component": "Authentication Handler",
+        "days_open": 155,
+        "patch_available": "Yes",
+        "exploit_available": "Yes"
+      },
+      "threat_intel": {
+        "intel_id": "TI-3009",
+        "threat_actor": "SilentForge",
+        "campaign_name": "Build Chain Theft",
+        "exploit_maturity": "Weaponized",
+        "ransomware_association": "No",
+        "confidence": "High",
+        "target_sector": "Technology",
+        "target_region": "Global",
+        "summary": "SilentForge also exploiting JetBrains TeamCity CVE-2024-27198 authentication bypass to access build pipelines and extract secrets."
+      },
+      "kev": {
+        "in_kev": true,
+        "known_ransomware_campaign_use": "Known",
+        "date_added": "2024-03-07"
+      },
+      "business_service": {
+        "name": "DevOps Platform",
+        "business_owner": "VP Engineering",
+        "business_impact": "Build, deploy and monitoring toolchain offline; operational visibility lost",
+        "customer_facing": "No",
+        "compliance_scope": "SOC 2",
+        "revenue_impact": "Medium"
+      },
+      "nist_control": {
+        "control_id": "IA-2.8",
+        "title": "Access to Accounts \u2014 Replay Resistant",
+        "similarity": 0.609174669,
+        "weakness_category": "authentication_bypass",
+        "query_phrase": "account management and access enforcement for broken authentication and access control for Authentication Handler",
+        "summary": "Use authentication methods that can't be fooled by repeated attempts to reuse old login information."
+      },
+      "why_sentence": "The risk score is driven by the vulnerability's high severity and the asset's public exposure."
+    }
+  ]
+}
