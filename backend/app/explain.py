@@ -38,14 +38,23 @@ def _chat(prompt, max_tokens=120, temperature=0.2):
 
 def explain_score(score_breakdown, raw_score, risk_score):
     """One sentence narrating which factors drive the score.
-    LLM receives ONLY the structured breakdown — never asset names, CVEs, or actor names."""
+    LLM receives ONLY the structured breakdown — never asset names, CVEs, or actor names.
+    Every factor with ≥8 points must be named explicitly; catch-all phrases forbidden."""
     factors = [
         (COMPONENT_LABELS[k], v)
         for k, v in score_breakdown.items()
         if v and v > 0 and k in COMPONENT_LABELS
     ]
     factors.sort(key=lambda x: -x[1])
-    factor_lines = "\n".join(f"- {label}: {points} points" for label, points in factors)
+
+    required = [(label, p) for label, p in factors if p >= 8]
+    optional = [(label, p) for label, p in factors if 0 < p < 8]
+
+    required_lines = "\n".join(f"- {label}: {p} points" for label, p in required)
+    optional_lines = (
+        "\n".join(f"- {label}: {p} points" for label, p in optional)
+        if optional else "(none)"
+    )
 
     prompt = f"""You write one-sentence plain-English explanations of why a vulnerability scored as it did, from a structured additive scoring breakdown.
 
@@ -58,31 +67,39 @@ PRIORITY ORDER for choosing the LEAD (from the threat report's analyst notes —
 
 Severity / CVSS is a minor capped contributor and MUST NOT lead.
 
-FACTORS THAT CONTRIBUTE TO THIS RISK (you may mention ONLY these):
-{factor_lines}
+REQUIRED FACTORS (your sentence MUST name every single one of these, each with its point value):
+{required_lines}
+
+OPTIONAL FACTORS (you may include or omit; if included, name explicitly with value — never a catch-all):
+{optional_lines}
 
 (Raw total: {raw_score}; displayed score capped at 100: {risk_score}.)
 
 STRICT RULES:
-1. Mention ONLY factors literally present in the FACTORS list above. If a factor is not in that list, DO NOT mention it. For example, if "ransomware" is not in the FACTORS list, do NOT write any ransomware-related claim, even if other risks would. An absent factor means it is genuinely absent for this risk.
-2. Name AT LEAST three of the highest-scoring factors above, by name, in plain language.
-3. LEAD with whichever priority-order driver (1-5 above) is present in the FACTORS list. Use that priority order — not raw point count — to choose the lead.
-4. DO NOT lead with the underlying vulnerability's severity rating. You may mention severity only as a trailing detail, or omit it.
-5. Cite point values inline like "(25)".
-6. Do not invent vendors, products, vulnerability names, CVE IDs, or numbers not in the FACTORS list above.
-7. Output exactly ONE sentence under 55 words — no preface, no bullets, no numbering.
+1. Your sentence MUST name every label from REQUIRED FACTORS, each with its point value in parentheses like "(25)". Do not skip any.
+2. FORBIDDEN PHRASES (never use any of these): "other factors", "additional contributors", "and more", "etc.", "and others", "various factors", "among other things", "and so on". Every factor cited must be explicitly named.
+3. You may include OPTIONAL FACTORS by name with their point value, or omit them entirely. If included, name them; never refer with a catch-all.
+4. Do NOT mention any factor that is not in REQUIRED or OPTIONAL above.
+5. LEAD with whichever priority-order driver (1-5 above) is present in REQUIRED FACTORS. Use that priority order, not raw point count.
+6. DO NOT lead with the underlying vulnerability's severity rating. Severity is a minor capped contributor; you may mention it only as a trailing detail.
+7. Do not invent vendors, products, vulnerability names, CVE IDs, or numbers not in the lists above.
+8. Output exactly ONE sentence — no preface, no bullets, no numbering. May be up to ~80 words to fit all required factors.
 
-EXAMPLE (FORMAT-ONLY — your input has DIFFERENT factors; do not assume any factor below is in your input):
-Suppose factors were:
+EXAMPLE (FORMAT-ONLY — your input has DIFFERENT factors; do not copy these labels):
+If REQUIRED were:
 - FACTOR-A: 25 points
-- FACTOR-B: 20 points
-- FACTOR-C: 8 points
-A valid output:
-"This risk is driven primarily by FACTOR-A (25) and FACTOR-B (20), with FACTOR-C (8) as a secondary contributor."
-(Do NOT use placeholder labels in your real output. Use the actual factor names from the FACTORS list above. Do NOT mention any factor not in that list.)
+- FACTOR-B: 25 points
+- FACTOR-C: 15 points
+- FACTOR-D: 18 points
+- FACTOR-E: 8 points
+- FACTOR-F: 29 points
+And OPTIONAL were:
+- FACTOR-G: 5 points
+A valid output (names every REQUIRED factor, optionally includes FACTOR-G):
+"This risk is driven by FACTOR-A (25) and FACTOR-B (25), compounded by FACTOR-D (18), FACTOR-C (15), and FACTOR-E (8), on top of FACTOR-F (29) and a minor FACTOR-G (5) contribution."
 
-NOW WRITE THE SENTENCE FOR THE FACTORS LIST ABOVE:"""
-    return _chat(prompt, max_tokens=200, temperature=0)
+NOW WRITE THE SENTENCE FOR THE REQUIRED + OPTIONAL FACTORS ABOVE:"""
+    return _chat(prompt, max_tokens=300, temperature=0)
 
 
 def explain_control(control_id, title, text):

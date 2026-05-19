@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-19T19:47:47.014303+00:00",
+  "generated_at": "2026-05-19T20:04:06.350667+00:00",
   "data_quality": {
     "threat_intel_total": 40,
     "threat_intel_matched": 24,
@@ -77,7 +77,7 @@
         "query_phrase": "flaw remediation and security patch management for exploitable software vulnerability for VPN Firmware",
         "summary": "Fix system flaws and security vulnerabilities in a timely manner."
       },
-      "why_sentence": "The risk is driven by internet exposure (25), a working exploit (25), and business criticality (18), with ransomware linkage (15) and missing endpoint detection (8) also contributing."
+      "why_sentence": "This vulnerability scored as it did because it's driven by the affected asset being directly exposed to the public internet (25), a working exploit being available and confirmed in active use (25), compounded by the asset's business criticality and regulatory compliance scope (18), its link to active ransomware campaigns (15), the absence of endpoint detection on the affected asset (8), on top of the underlying vulnerability's severity rating (29.4)."
     },
     {
       "rank": 2,
@@ -145,9 +145,9 @@
         "similarity": 0.525294304,
         "weakness_category": "rce_memory_corruption",
         "query_phrase": "flaw remediation and security patch management for exploitable software vulnerability for VPN Firmware",
-        "summary": "Fix system flaws and vulnerabilities in a timely manner."
+        "summary": "Fix system flaws and vulnerabilities in a timely and controlled manner."
       },
-      "why_sentence": "The risk is driven by internet exposure (25) and a working exploit (25), with business criticality (18) as a secondary contributor."
+      "why_sentence": "This vulnerability scored as it did because it's driven by internet exposure (25) and active exploitation with a working exploit (25), compounded by ransomware association (15), business criticality and regulatory compliance scope (18), the absence of endpoint detection (8), and the underlying vulnerability's severity rating (29.4)."
     },
     {
       "rank": 3,
@@ -217,7 +217,7 @@
         "query_phrase": "session authenticator management and replay-resistant authentication for stolen session tokens for NetScaler ADC",
         "summary": "Use authentication methods that can't be fooled by repeated attempts to reuse old login information."
       },
-      "why_sentence": "The risk is driven by internet exposure (25) and a working exploit (25), with ransomware association (15) as a secondary contributor."
+      "why_sentence": "This risk is driven by the affected asset being directly exposed to the public internet (25) and a working exploit being available and confirmed in active use (25), compounded by the vulnerability being linked to active ransomware campaigns (15), the asset's business criticality and regulatory compliance scope (13), and the absence of endpoint detection on the affected asset (8), on top of the underlying vulnerability's severity rating (28.2) and the vulnerability remaining unpatched for an extended period (5)."
     },
     {
       "rank": 4,
@@ -287,7 +287,7 @@
         "query_phrase": "session authenticator management and replay-resistant authentication for stolen session tokens for NetScaler ADC",
         "summary": "Use authentication methods that can't be fooled by repeated attempts to reuse old login information."
       },
-      "why_sentence": "The risk is driven by internet exposure (25), a working exploit (25), and ransomware association (15), with business criticality (13) and missing endpoint detection (8) as secondary contributors."
+      "why_sentence": "This risk is driven by the affected asset being directly exposed to the public internet (25) and a working exploit being available and confirmed in active use (25), compounded by the underlying vulnerability's severity rating (28.2), the vulnerability being linked to active ransomware campaigns (15), the asset's business criticality and regulatory compliance scope (13), the absence of endpoint detection on the affected asset (8), and the vulnerability remaining unpatched for an extended period (5)."
     },
     {
       "rank": 5,
@@ -357,7 +357,7 @@
         "query_phrase": "account management and access enforcement for broken authentication and access control",
         "summary": "Manage system accounts to control user access and privileges."
       },
-      "why_sentence": "The risk is driven by internet exposure (25), a working exploit (25), and ransomware association (15), with other factors contributing."
+      "why_sentence": "This risk is driven by the affected asset being directly exposed to the public internet (25) and a working exploit being available and confirmed in active use (25), compounded by the underlying vulnerability's severity rating (29.4), the vulnerability being linked to active ransomware campaigns (15), the asset's business criticality and regulatory compliance scope (8), and the absence of endpoint detection on the affected asset (8), with the vulnerability remaining unpatched for an extended period (5) also a consideration."
     }
   ]
 }
