@@ -36,70 +36,70 @@ def _chat(prompt, max_tokens=120, temperature=0.2):
     return response.choices[0].message.content.strip()
 
 
-def explain_score(score_breakdown, raw_score, risk_score):
-    """One sentence narrating which factors drive the score.
-    LLM receives ONLY the structured breakdown — never asset names, CVEs, or actor names.
-    Every factor with ≥8 points must be named explicitly; catch-all phrases forbidden."""
+STYLE_HINTS = [
+    "Open with the asset's position or attack surface (what makes the host attractive to attackers).",
+    "Open with the active threat (what attackers are currently doing against this vulnerability in the wild).",
+    "Open with what is missing on the host (e.g., the absence of endpoint detection or other compensating controls).",
+    "Use a telegraphic, fact-listing tone — short declarative observations stacked together, not a flowing paragraph.",
+    "Open with a rhetorical framing like 'What pushes this near the top is...' or 'The reason this ranks where it does is...'.",
+]
+
+
+def explain_score(score_breakdown, raw_score, risk_score, style_hint=None):
+    """A short analyst-style note (2-3 sentences) explaining what drives the risk.
+    No inline point values in the prose — the structured breakdown shows those separately.
+    `style_hint` lets the caller force phrasing variation across multiple risks."""
     factors = [
         (COMPONENT_LABELS[k], v)
         for k, v in score_breakdown.items()
         if v and v > 0 and k in COMPONENT_LABELS
     ]
     factors.sort(key=lambda x: -x[1])
+    factor_lines = "\n".join(f"- {label} (weight: {p})" for label, p in factors)
 
-    required = [(label, p) for label, p in factors if p >= 8]
-    optional = [(label, p) for label, p in factors if 0 < p < 8]
-
-    required_lines = "\n".join(f"- {label}: {p} points" for label, p in required)
-    optional_lines = (
-        "\n".join(f"- {label}: {p} points" for label, p in optional)
-        if optional else "(none)"
+    style_clause = (
+        f"\n\nSTYLE FOR THIS NOTE: {style_hint} Each of the top-5 risks gets a different opening style so the analyst notes read distinctly; you have been assigned the style above for this particular risk.\n"
+        if style_hint else ""
     )
 
-    prompt = f"""You write one-sentence plain-English explanations of why a vulnerability scored as it did, from a structured additive scoring breakdown.
+    prompt = f"""You write short security-analyst notes explaining why a vulnerability scored as it did, in plain English a non-technical executive can read.{style_clause}
 
-PRIORITY ORDER for choosing the LEAD (from the threat report's analyst notes — independent of point counts):
+PRIORITY ORDER for the LEAD (independent of point counts):
 1. internet exposure
 2. active exploitation (working exploit, weaponized in current campaigns)
 3. ransomware association
 4. business criticality and regulatory compliance scope
 5. missing compensating controls (e.g. no EDR installed)
 
-Severity / CVSS is a minor capped contributor and MUST NOT lead.
+Severity / CVSS is a minor capped factor. You may OMIT it from the prose entirely if the note reads better without it.
 
-REQUIRED FACTORS (your sentence MUST name every single one of these, each with its point value):
-{required_lines}
+FACTORS PRESENT FOR THIS RISK (the weight numbers are for YOUR reference only — DO NOT put them into the prose):
+{factor_lines}
 
-OPTIONAL FACTORS (you may include or omit; if included, name explicitly with value — never a catch-all):
-{optional_lines}
-
-(Raw total: {raw_score}; displayed score capped at 100: {risk_score}.)
+YOUR TASK: Write 2 OR 3 short sentences, in the voice of a security analyst writing a brief, like an investigation note.
 
 STRICT RULES:
-1. Your sentence MUST name every label from REQUIRED FACTORS, each with its point value in parentheses like "(25)". Do not skip any.
-2. FORBIDDEN PHRASES (never use any of these): "other factors", "additional contributors", "and more", "etc.", "and others", "various factors", "among other things", "and so on". Every factor cited must be explicitly named.
-3. You may include OPTIONAL FACTORS by name with their point value, or omit them entirely. If included, name them; never refer with a catch-all.
-4. Do NOT mention any factor that is not in REQUIRED or OPTIONAL above.
-5. LEAD with whichever priority-order driver (1-5 above) is present in REQUIRED FACTORS. Use that priority order, not raw point count.
-6. DO NOT lead with the underlying vulnerability's severity rating. Severity is a minor capped contributor; you may mention it only as a trailing detail.
-7. Do not invent vendors, products, vulnerability names, CVE IDs, or numbers not in the lists above.
-8. Output exactly ONE sentence — no preface, no bullets, no numbering. May be up to ~80 words to fit all required factors.
+1. NO numeric values inside the prose. No "(25)", no "(15)", no "(29.4)". The exact scores live in a structured block elsewhere on the page; the prose must NOT repeat them. If you write any number in parentheses you have broken this rule.
+2. Name the genuinely significant factors that are present in the FACTORS list — typically internet exposure, active exploitation, ransomware linkage, missing EDR, business/compliance criticality — in plain words. You do NOT need to mention every factor; pick what genuinely explains the score.
+3. Mention ONLY factors that appear in the FACTORS list above. Do not invent factors. If ransomware isn't in the list, don't mention ransomware.
+4. DO NOT lead with the underlying vulnerability's severity rating. Severity can be omitted entirely.
+5. Vary the phrasing. Do NOT start the note with "This risk is driven by..." or use the "driven by X, compounded by Y" template. Different risks should read differently.
+6. Write 2 OR 3 short, declarative sentences. No bullets, no numbering, no preface. Conversational, not robotic.
+7. Do not invent vendors, products, vulnerability names, or CVE IDs.
 
-EXAMPLE (FORMAT-ONLY — your input has DIFFERENT factors; do not copy these labels):
-If REQUIRED were:
-- FACTOR-A: 25 points
-- FACTOR-B: 25 points
-- FACTOR-C: 15 points
-- FACTOR-D: 18 points
-- FACTOR-E: 8 points
-- FACTOR-F: 29 points
-And OPTIONAL were:
-- FACTOR-G: 5 points
-A valid output (names every REQUIRED factor, optionally includes FACTOR-G):
-"This risk is driven by FACTOR-A (25) and FACTOR-B (25), compounded by FACTOR-D (18), FACTOR-C (15), and FACTOR-E (8), on top of FACTOR-F (29) and a minor FACTOR-G (5) contribution."
+EXAMPLES OF STYLE (three different voices — do not copy them verbatim; match the tone, not the exact structure):
 
-NOW WRITE THE SENTENCE FOR THE REQUIRED + OPTIONAL FACTORS ABOVE:"""
-    return _chat(prompt, max_tokens=300, temperature=0)
+Example A:
+The asset is internet-facing and the vulnerability has a working exploit already in confirmed active use. It is also tied to ransomware campaigns currently observed in the wild, and the host has no endpoint detection installed. The affected service is business-critical and falls under regulatory scope.
+
+Example B:
+What pushes this near the top is public-internet exposure combined with a weaponized exploit. Endpoint detection is absent on this host, and the service it supports is business-critical.
+
+Example C:
+Public-facing asset with a known-exploited vulnerability and active ransomware-campaign linkage. The host lacks endpoint detection and the affected service carries regulated, customer-critical load.
+
+NOW WRITE THE NOTE FOR THE FACTORS LIST ABOVE:"""
+    return _chat(prompt, max_tokens=250, temperature=0)
 
 
 def explain_control(control_id, title, text):

@@ -12,7 +12,7 @@ from app.ingest import load_all
 from app.enrich import build_enriched, report_match_counts
 from app.score import score_all, top_n
 from app.rag import retrieve_for_risk
-from app.explain import explain_score, explain_control
+from app.explain import STYLE_HINTS, explain_score, explain_control
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
 RESULTS_PATH = BACKEND_DIR / "results.json"
@@ -128,9 +128,11 @@ def run(verbose=True):
         retrieval = retrieve_for_risk(row)
         entry = _build_entry(rank, row, retrieval)
 
-        # LLM prose: rephrases structured input only.
+        # LLM prose: rephrases structured input only. Style hint rotates per rank
+        # so the 5 notes don't all collapse to the same template at temperature 0.
         entry["why_sentence"] = explain_score(
-            entry["score_breakdown"], entry["raw_score"], entry["risk_score"]
+            entry["score_breakdown"], entry["raw_score"], entry["risk_score"],
+            style_hint=STYLE_HINTS[(rank - 1) % len(STYLE_HINTS)],
         )
         entry["nist_control"]["summary"] = explain_control(
             entry["nist_control"]["control_id"],
