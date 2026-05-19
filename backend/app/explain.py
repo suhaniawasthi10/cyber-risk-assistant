@@ -36,19 +36,11 @@ def _chat(prompt, max_tokens=120, temperature=0.2):
     return response.choices[0].message.content.strip()
 
 
-STYLE_HINTS = [
-    "Open with the asset's position or attack surface (what makes the host attractive to attackers).",
-    "Open with the active threat (what attackers are currently doing against this vulnerability in the wild).",
-    "Open with what is missing on the host (e.g., the absence of endpoint detection or other compensating controls).",
-    "Use a telegraphic, fact-listing tone — short declarative observations stacked together, not a flowing paragraph.",
-    "Open with a rhetorical framing like 'What pushes this near the top is...' or 'The reason this ranks where it does is...'.",
-]
-
-
-def explain_score(score_breakdown, raw_score, risk_score, style_hint=None):
+def explain_score(score_breakdown, raw_score, risk_score):
     """A short analyst-style note (2-3 sentences) explaining what drives the risk.
     No inline point values in the prose — the structured breakdown shows those separately.
-    `style_hint` lets the caller force phrasing variation across multiple risks."""
+    Same input gives same output at temperature 0; that's correct because two risks
+    with identical breakdowns genuinely deserve similar explanations."""
     factors = [
         (COMPONENT_LABELS[k], v)
         for k, v in score_breakdown.items()
@@ -57,12 +49,7 @@ def explain_score(score_breakdown, raw_score, risk_score, style_hint=None):
     factors.sort(key=lambda x: -x[1])
     factor_lines = "\n".join(f"- {label} (weight: {p})" for label, p in factors)
 
-    style_clause = (
-        f"\n\nSTYLE FOR THIS NOTE: {style_hint} Each of the top-5 risks gets a different opening style so the analyst notes read distinctly; you have been assigned the style above for this particular risk.\n"
-        if style_hint else ""
-    )
-
-    prompt = f"""You write short security-analyst notes explaining why a vulnerability scored as it did, in plain English a non-technical executive can read.{style_clause}
+    prompt = f"""You write short security-analyst notes explaining why a vulnerability scored as it did, in plain English a non-technical executive can read.
 
 PRIORITY ORDER for the LEAD (independent of point counts):
 1. internet exposure
@@ -83,19 +70,11 @@ STRICT RULES:
 2. Name the genuinely significant factors that are present in the FACTORS list — typically internet exposure, active exploitation, ransomware linkage, missing EDR, business/compliance criticality — in plain words. You do NOT need to mention every factor; pick what genuinely explains the score.
 3. Mention ONLY factors that appear in the FACTORS list above. Do not invent factors. If ransomware isn't in the list, don't mention ransomware.
 4. DO NOT lead with the underlying vulnerability's severity rating. Severity can be omitted entirely.
-5. Vary the phrasing. Do NOT start the note with "This risk is driven by..." or use the "driven by X, compounded by Y" template. Different risks should read differently.
+5. Do NOT use a rigid template like "This risk is driven by X, compounded by Y". Avoid catch-all phrases such as "other factors", "additional contributors", "and more", "etc.", "various factors".
 6. Write 2 OR 3 short, declarative sentences. No bullets, no numbering, no preface. Conversational, not robotic.
 7. Do not invent vendors, products, vulnerability names, or CVE IDs.
 
-EXAMPLES OF STYLE (three different voices — do not copy them verbatim; match the tone, not the exact structure):
-
-Example A:
-The asset is internet-facing and the vulnerability has a working exploit already in confirmed active use. It is also tied to ransomware campaigns currently observed in the wild, and the host has no endpoint detection installed. The affected service is business-critical and falls under regulatory scope.
-
-Example B:
-What pushes this near the top is public-internet exposure combined with a weaponized exploit. Endpoint detection is absent on this host, and the service it supports is business-critical.
-
-Example C:
+EXAMPLE (one illustrative style; you are not required to copy this structure):
 Public-facing asset with a known-exploited vulnerability and active ransomware-campaign linkage. The host lacks endpoint detection and the affected service carries regulated, customer-critical load.
 
 NOW WRITE THE NOTE FOR THE FACTORS LIST ABOVE:"""

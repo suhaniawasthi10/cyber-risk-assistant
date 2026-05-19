@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-19T20:15:50.025645+00:00",
+  "generated_at": "2026-05-19T20:28:06.941290+00:00",
   "data_quality": {
     "threat_intel_total": 40,
     "threat_intel_matched": 24,
@@ -75,9 +75,9 @@
         "similarity": 0.525294304,
         "weakness_category": "rce_memory_corruption",
         "query_phrase": "flaw remediation and security patch management for exploitable software vulnerability for VPN Firmware",
-        "summary": "Fix system flaws and vulnerabilities in a timely and controlled manner."
+        "summary": "Fix system flaws and vulnerabilities in a timely manner."
       },
-      "why_sentence": "The asset's position as a public-facing host makes it an attractive target for attackers. A working exploit is already in active use, and the vulnerability is linked to ongoing ransomware campaigns, further increasing the risk. The host's business-critical nature and regulatory compliance scope, combined with the lack of endpoint detection, also contribute to the elevated risk."
+      "why_sentence": "The affected asset is directly exposed to the public internet, making it an attractive target for attackers. A working exploit is available and has been confirmed in active use, which significantly increases the risk. The asset's business criticality and regulatory compliance scope, combined with the lack of endpoint detection, further elevate the concern."
     },
     {
       "rank": 2,
@@ -145,9 +145,9 @@
         "similarity": 0.525294304,
         "weakness_category": "rce_memory_corruption",
         "query_phrase": "flaw remediation and security patch management for exploitable software vulnerability for VPN Firmware",
-        "summary": "Fix system flaws to prevent security issues."
+        "summary": "Fix system flaws and vulnerabilities in a timely and controlled manner."
       },
-      "why_sentence": "Attackers are currently exploiting this vulnerability in active campaigns, taking advantage of the fact that the affected asset is directly exposed to the public internet. The presence of a working exploit, combined with the asset's business-critical nature and regulatory compliance scope, makes this a high-priority risk. Additionally, the vulnerability's linkage to active ransomware campaigns and the lack of endpoint detection on the affected asset further elevate the threat."
+      "why_sentence": "The affected asset is directly exposed to the public internet, making it an attractive target for attackers. A working exploit is available and has been confirmed in active use, which significantly increases the risk. The asset's business criticality and regulatory compliance scope, combined with the lack of endpoint detection, further elevate the concern."
     },
     {
       "rank": 3,
@@ -217,7 +217,7 @@
         "query_phrase": "session authenticator management and replay-resistant authentication for stolen session tokens for NetScaler ADC",
         "summary": "Use authentication methods that can't be fooled by repeated attempts to reuse old login information."
       },
-      "why_sentence": "The host is missing endpoint detection, which is a significant concern given its direct exposure to the public internet. A working exploit is already available and in active use, and this vulnerability is also linked to current ransomware campaigns. The asset's business-critical nature and regulatory compliance scope further elevate the risk."
+      "why_sentence": "The affected asset is directly exposed to the public internet, making it an attractive target for attackers. A working exploit is available and has been confirmed in active use, further increasing the risk. The vulnerability is also linked to active ransomware campaigns and affects a business-critical asset with significant regulatory compliance scope, while lacking endpoint detection."
     },
     {
       "rank": 4,
@@ -287,7 +287,7 @@
         "query_phrase": "session authenticator management and replay-resistant authentication for stolen session tokens for NetScaler ADC",
         "summary": "Use authentication methods that can't be fooled by repeated attempts to reuse old login information."
       },
-      "why_sentence": "The asset is directly exposed to the public internet. A working exploit is available and in active use, and this vulnerability is linked to current ransomware campaigns. The affected asset also lacks endpoint detection and supports a business-critical service with regulatory compliance scope."
+      "why_sentence": "The affected asset is directly exposed to the public internet, making it an attractive target for attackers. A working exploit is available and has been confirmed in active use, which significantly increases the risk. The vulnerability is also linked to active ransomware campaigns and affects a business-critical asset with significant regulatory compliance scope, further amplifying the potential impact."
     },
     {
       "rank": 5,
@@ -357,7 +357,7 @@
         "query_phrase": "account management and access enforcement for broken authentication and access control",
         "summary": "Manage system accounts to control user access and privileges."
       },
-      "why_sentence": "What pushes this near the top is the combination of public internet exposure and a working exploit being actively used by attackers. The fact that this vulnerability is also linked to active ransomware campaigns and the asset's business-critical nature, which falls under regulatory compliance scope, further elevates the risk. Additionally, the absence of endpoint detection on the affected asset leaves it more vulnerable to attack."
+      "why_sentence": "The affected asset is directly exposed to the public internet, making it an attractive target for attackers. A working exploit is available and has been confirmed in active use, which significantly increases the risk. The vulnerability is also linked to active ransomware campaigns, and the absence of endpoint detection on the asset further elevates the threat."
     }
   ]
 }
