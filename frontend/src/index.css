@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    background-color: #0c0c0d;
+    color: #e8e8e6;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    margin: 0;
+  }
+}
+
+@layer components {
+  .kv-grid {
+    @apply grid gap-x-6 gap-y-2 text-sm;
+    grid-template-columns: max-content 1fr;
+  }
+  .kv-label {
+    @apply font-mono text-xs uppercase tracking-wider text-muted pt-0.5;
+  }
+}
