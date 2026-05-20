@@ -26,7 +26,7 @@ The first version of retrieval used the raw vulnerability name plus the affected
 
 The fix was a classify-then-query layer. A small rule-based classifier in `rag.py` routes every vulnerability into one of five weakness categories (RCE/memory corruption, token/session theft, authentication bypass, unsupported software, misconfiguration / missing control), and each category maps to a NIST-vocabulary query *phrase* — never to a control ID. The classifier picks the vocabulary; Pinecone still picks the control from the live index. No control IDs are ever hardcoded.
 
-After the fix, similarity scores sat between 0.53 and 0.64, and four of the top 5 retrievals landed on textbook-correct controls (SI-2 for the Fortinet RCEs, IA-2.8 for the Citrix session-token leaks, AC-2 for the TeamCity auth bypass). The full story is in commit history; I'm flagging it here because it's the kind of "naive RAG fails, structured routing fixes it" lesson the brief seems designed to surface.
+After the fix, similarity scores sat between 0.53 and 0.64, and three of the top 5 retrievals landed on textbook-correct controls (the two SI-2 hits for the Fortinet RCEs and AC-2 for the TeamCity auth bypass). The other two were IA-2.8 *Access to Accounts — Replay Resistant* for the two CitrixBleed entries; IA-2.8 isn't the textbook answer for a generic vulnerability, but CitrixBleed is specifically a session-token-replay attack, so replay resistance is genuinely on-point — arguably more useful here than a generic SI-2 patch-it directive would have been. The full story is in commit history; I'm flagging it here because it's the kind of "naive RAG fails, structured routing fixes it" lesson the brief seems designed to surface.
 
 ## One nice piece of cross-referencing the system does
 
@@ -135,7 +135,7 @@ I'd build a small automated evaluation harness for the RAG step. Right now retri
 
 A few honest things this system doesn't do well:
 
-- **TeamCity's retrieved control is a near-tie.** AC-2 won at 0.644, with IA-5 (0.585) and IA-2.8 (0.567) sitting just behind. For a generic authentication-bypass weakness all three are defensible; the embedding model picked one. A retrieval-eval harness (see above) would surface these ties explicitly.
+- **TeamCity's retrieved control is a near-tie.** AC-2 won at 0.644, but three other access-control-family controls sit within 0.05 of it — AC-5 *Separation of Duties* (0.605), AC-3 *Access Enforcement* (0.597), and IA-5.8 *Multiple System Accounts* (0.595). For a generic authentication-bypass weakness on a CI/CD server several of these are defensible; the embedding model picked one. A retrieval-eval harness (see above) would surface these ties explicitly.
 - **The ransomware component is summed across two sources.** If both `threat_intelligence.csv` and CISA KEV mark a vulnerability as ransomware-associated, the component fires +15 — same as if only one fired. The output doesn't tell you which source fired it; a future version would split this into two fields so the cross-source confirmation (like the TeamCity case above) is visible at a glance.
 - **The remediation_guidance.csv file is unused as a remediation source.** The brief hints at it, but it's keyed by free-text `finding_type` and would fuzzy-misfire on edge cases, so I treat it as a hint at most and let NIST 800-53 retrieval be the actual source of remediation guidance.
 
