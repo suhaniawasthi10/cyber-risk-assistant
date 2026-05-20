@@ -1,122 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useState } from 'react'
 
-function App() {
-  const [count, setCount] = useState(0)
+const API_URL = import.meta.env.VITE_API_URL
+
+export default function App() {
+  const [data, setData] = useState(null)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/risks`)
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`)
+        return r.json()
+      })
+      .then(setData)
+      .catch((e) => setError(e.message))
+  }, [])
+
+  if (error) return <pre>error: {error}</pre>
+  if (!data) return <p>Loading…</p>
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <main>
+      <h1>TawasolPay — Top 5 Cyber Risks</h1>
+      <p>generated_at: {data.generated_at}</p>
 
-      <div className="ticks"></div>
+      {data.risks.map((r) => (
+        <section key={r.rank} style={{ borderTop: '1px solid #ccc', padding: '12px 0' }}>
+          <h2>#{r.rank} — score {r.risk_score} (raw {r.raw_score})</h2>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          <p><b>Asset:</b> {r.asset.asset_id} {r.asset.asset_name} ({r.asset.asset_type}, {r.asset.environment}) — owner: {r.asset.owner_team} — internet_exposed: {r.asset.internet_exposed} — criticality: {r.asset.criticality} — edr: {r.asset.edr_installed}</p>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+          <p><b>Vulnerability:</b> {r.vulnerability.vulnerability_name} — {r.vulnerability.cve} — CVSS {r.vulnerability.cvss} — component: {r.vulnerability.affected_component} — days_open: {r.vulnerability.days_open}</p>
+
+          {r.threat_intel && (
+            <p><b>Threat intel:</b> {r.threat_intel.threat_actor} / {r.threat_intel.campaign_name} — maturity: {r.threat_intel.exploit_maturity} — ransomware: {r.threat_intel.ransomware_association}</p>
+          )}
+
+          <p><b>Business service:</b> {r.business_service.name} — owner: {r.business_service.business_owner} — compliance: {r.business_service.compliance_scope}</p>
+
+          <p><b>Why:</b> {r.why_sentence}</p>
+
+          <p><b>NIST control:</b> {r.nist_control.control_id} — {r.nist_control.title}<br />{r.nist_control.summary}</p>
+        </section>
+      ))}
+    </main>
   )
 }
-
-export default App
